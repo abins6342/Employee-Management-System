@@ -52,13 +52,16 @@ namespace EmployeeManagement.UI.Controllers.InternalAPI
             }
         }
 
+
         [HttpPut]
         [Route("update-employees")]
         public IActionResult UpdateEmployee([FromBody] EmployeeDetailedViewModel employeeDetailedViewModel)
         {
             try
             {
+
                  _employeeApiClient.UpdateEmployee(employeeDetailedViewModel);
+
                 return Ok();
             }
             catch (Exception ex)

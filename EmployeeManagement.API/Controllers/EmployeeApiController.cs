@@ -30,21 +30,25 @@ namespace EmployeeManagement.API.Controllers
                 ValidateEmployee(employeeId);
                 /// get employee by calling GetEmployeeById() in IEmployeeService and store it in a variable and Map that variable to EmployeeDetailedViewModel. 
                 var getAEmployee = _employeeService.GetEmployeeById(employeeId);
-
-                if (getAEmployee == null)
+               
+                if (getAEmployee != null)
                 {
-                    return null;
+                    var employeeDetailedView = new EmployeeDetailedViewModel
+                    {
+                        Id = getAEmployee.Id,
+                        Name = getAEmployee.Name,
+                        Address = getAEmployee.Address,
+                        Age = getAEmployee.Age,
+                        Department = getAEmployee.Department
+                    };
+                    return Ok(employeeDetailedView);
+
+                }
+                else {
+                    throw new ArgumentNullException("No Employee");
                 }
                 
-               var employeeDetailedView= new EmployeeDetailedViewModel
-               {
-                    Id = getAEmployee.Id,
-                    Name = getAEmployee.Name,
-                    Address = getAEmployee.Address,
-                    Age = getAEmployee.Age,
-                    Department = getAEmployee.Department
-               };
-               return Ok(employeeDetailedView);
+               
                 
             }
             catch (ArgumentNullException ex)
@@ -116,6 +120,10 @@ namespace EmployeeManagement.API.Controllers
         {
             try
             {
+                if (employeeDetailedViewModel.Id <0)
+                {
+                    throw new ArgumentException("Invalid Employee Entry");
+                }
                 var empDto = new EmployeeDto
                 {
                     Id = employeeDetailedViewModel.Id,
@@ -125,6 +133,7 @@ namespace EmployeeManagement.API.Controllers
                     Department = employeeDetailedViewModel.Department
                 };
 
+                
                 _employeeService.UpdateEmployee(empDto);
                 return Ok();
             }
@@ -169,13 +178,7 @@ namespace EmployeeManagement.API.Controllers
 
         }
 
-        public void ValidateStudent(EmployeeDetailedViewModel employee)
-        {
-            if (employee == null)
-            {
-                throw new ArgumentNullException("Employee Not Found");
-            }
-        }
+        
         //Create Employee Insert, Update and Delete Endpoint here
     }
 }
