@@ -23,24 +23,15 @@ function bindEvents() {
                 $("#EmployeeCard").html(newEmployeeCard);
 
                 showEmployeeDetailCard();
-                //setTimeout(hideEmployeeDetailCard,2000);
+                setTimeout(hideEmployeeDetailCard,5000);
 
             },
             error: function (error) {
                 console.log(error);
             }
         });
-
-
     });
-
-    /*$(".employeeDetails").on("click", function (event) {
-        var x = 'html'
-        $(#id).html(x);
-        $(#id).show();
-    });*/
-
-    
+ 
     $(".employeeDelete").on("click",function (event) {
         var employeeId = event.currentTarget.getAttribute("data-id");
         if (confirm("Do you want to delete?"))
@@ -49,7 +40,7 @@ function bindEvents() {
                 url: 'https://localhost:44383/api/internal/employee/deleteemployees/' + employeeId,
                 type: 'DELETE',
                 contentType: "application/json; charset=utf-8",
-                success: function (result) {  
+                success: function () {  
                     location.reload();    
                 },
                 error: function (error) {
@@ -69,16 +60,15 @@ function bindEvents() {
         employeeDetailedViewModel.Age = Number($("#age").val());
         employeeDetailedViewModel.Address = $("#address").val();
 
-        var data = JSON.stringify(employeeDetailedViewModel);
-
         $.ajax({
             url: 'https://localhost:44383/api/internal/employee/insert-employees',
             type: 'POST',
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
-            data: data,
-            success: function (result) {
-                location.reload(true);
+            data: JSON.stringify(employeeDetailedViewModel),
+            success: function () {
+
+                location.reload();
             },
             error: function (error) {
                 console.log(error);
@@ -86,32 +76,55 @@ function bindEvents() {
         });
     });
 
-    $("#updateform").submit(function (event) {
-
-        var employeeDetailedViewModel = {};
-
-        employeeDetailedViewModel.Id = Number($("#empId").val());
-        employeeDetailedViewModel.Name = $("#empName").val();
-        employeeDetailedViewModel.Department = $("#empDept").val();
-        employeeDetailedViewModel.Age = Number($("#empAge").val());
-        employeeDetailedViewModel.Address = $("#empAddress").val();
-
-        var data = JSON.stringify(employeeDetailedViewModel);
+    $(".employeeEdit").on("click", function (event) {
+        
+        var employeeId = event.currentTarget.getAttribute("data-id");
 
         $.ajax({
-            url: 'https://localhost:44383/api/internal/employee/update-employees',
-            type: 'PUT',
-            dataType: 'json',
+            url: 'https://localhost:44383/api/internal/employee/' + employeeId,
+            type: 'GET',
             contentType: "application/json; charset=utf-8",
-            data: data,
             success: function (result) {
-                location.reload(true);
+                $("#updateEmployeeId").val(result.id)
+                $("#updateEmployeeName").val(result.name)
+                $("#updateEmployeeDepartment").val(result.department)
+                $("#updateEmployeeAge").val(result.age)
+                $("#updateEmployeeAddress").val(result.address)
             },
             error: function (error) {
                 console.log(error);
             }
         });
+        $("#updateform").submit(function (event) {
+
+            var employeeDetailedViewModel = {};
+
+            employeeDetailedViewModel.Id = Number($("#updateEmployeeId").val());
+            employeeDetailedViewModel.Name = $("#updateEmployeeName").val();
+            employeeDetailedViewModel.Department = $("#updateEmployeeDepartment").val();
+            employeeDetailedViewModel.Age = Number($("#updateEmployeeAge").val());
+            employeeDetailedViewModel.Address = $("#updateEmployeeAddress").val();
+
+            $.ajax({
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                url: 'https://localhost:44383/api/internal/employee/update-employees',
+                type: 'PUT',
+                data: JSON.stringify(employeeDetailedViewModel),
+                dataType: 'json',
+                success: function () {
+
+                    location.reload();
+                },
+                error: function (error) {                   
+                    console.log(error);
+                }
+            });
+        });
     });
+
 }
 
 function hideEmployeeDetailCard() {

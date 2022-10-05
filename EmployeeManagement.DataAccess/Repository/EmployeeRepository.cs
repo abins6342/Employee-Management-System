@@ -99,7 +99,7 @@ namespace EmployeeManagement.DataAccess.Repository
                 var sqlCommand = new SqlCommand(cmdText: "EXEC spInsertEmployee @EmployeeName,@EmployeeDepartment,@EmployeeAge,@EmployeeAddress", _sqlConnection);
 
                 sqlCommand.Parameters.AddWithValue("EmployeeName", employeeData.Name);
-                sqlCommand.Parameters.AddWithValue("EmployeeDepartment", employeeData.Age);
+                sqlCommand.Parameters.AddWithValue("EmployeeDepartment", employeeData.Department);
                 sqlCommand.Parameters.AddWithValue("EmployeeAge", employeeData.Age);
                 sqlCommand.Parameters.AddWithValue("EmployeeAddress", employeeData.Address);
 

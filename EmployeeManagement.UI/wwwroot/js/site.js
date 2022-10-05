@@ -3,10 +3,10 @@
 
 // Write your JavaScript code.
 
-function validateForm() {
+/*function validateForm() {
     let x = document.forms["createform"]["name"].value;
     if (x == "") {
         alert("Please fill out all the fields");
         return false;
     }
-}
+}*/
