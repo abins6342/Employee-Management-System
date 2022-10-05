@@ -46,19 +46,8 @@ namespace EmployeeManagement.API.Controllers
                 }
                 else {
                     throw new ArgumentNullException("No Employee");
-                }
-                
-               
-                
-            }
-            catch (ArgumentNullException ex)
-            {
-                return StatusCode(StatusCodes.Status404NotFound, ex.Message);
-            }
-            catch (ArgumentException ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
+                }   
+            }                       
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
@@ -158,11 +147,7 @@ namespace EmployeeManagement.API.Controllers
             catch (ArgumentNullException ex)
             {
                 return StatusCode(StatusCodes.Status404NotFound, ex.Message);
-            }
-            catch (ArgumentException ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
+            }            
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
@@ -177,8 +162,6 @@ namespace EmployeeManagement.API.Controllers
             }
 
         }
-
-        
         //Create Employee Insert, Update and Delete Endpoint here
     }
 }

@@ -55,7 +55,7 @@ namespace EmployeeManagement.UI.Providers.ApiClients
             await response.Content.ReadAsStringAsync();
         }
 
-        public async void DeleteEmployee(int employeeId)
+       public async void DeleteEmployee(int employeeId)
         {
             using var response =await _httpClient.DeleteAsync("https://localhost:44305/api/deleteemployees/" + employeeId);
             await response.Content.ReadAsStringAsync();
