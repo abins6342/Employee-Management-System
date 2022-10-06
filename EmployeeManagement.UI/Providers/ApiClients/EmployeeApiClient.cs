@@ -43,7 +43,7 @@ namespace EmployeeManagement.UI.Providers.ApiClients
         {
             var json = JsonConvert.SerializeObject(employeeDetailedViewModel);
             var contentData = new StringContent(json, Encoding.UTF8, "application/json");
-            using var response =await _httpClient.PostAsync("https://localhost:44305/api/insertEmployees", contentData);
+            var response =await _httpClient.PostAsync("https://localhost:44305/api/insertEmployees", contentData);
             await response.Content.ReadAsStringAsync();
         }
 

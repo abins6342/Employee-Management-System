@@ -32,25 +32,6 @@ function bindEvents() {
         });
     });
  
-    $(".employeeDelete").on("click",function (event) {
-        var employeeId = event.currentTarget.getAttribute("data-id");
-        if (confirm("Do you want to delete?"))
-        {
-            $.ajax({
-                url: 'https://localhost:44383/api/internal/employee/deleteemployees/' + employeeId,
-                type: 'DELETE',
-                contentType: "application/json; charset=utf-8",
-                success: function () {  
-                    location.reload();    
-                },
-                error: function (error) {
-                    console.log(error);
-                }
-            });
-        }
-    });
-
-
     $("#createform").submit(function (event) {
 
         var employeeDetailedViewModel = {};
@@ -65,11 +46,11 @@ function bindEvents() {
             type: 'POST',
             dataType: 'json',
             contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(employeeDetailedViewModel),
-            async: false,
+            data: JSON.stringify(employeeDetailedViewModel),           
             success: function () {
 
                 location.reload();
+                
             },
             error: function (error) {
                 console.log(error);
@@ -114,8 +95,7 @@ function bindEvents() {
                 url: 'https://localhost:44383/api/internal/employee/update-employees',
                 type: 'PUT',
                 data: JSON.stringify(employeeDetailedViewModel),
-                dataType: 'json',
-                async: false,
+                dataType: 'json',                
                 success: function () {
 
                     location.reload();
@@ -127,6 +107,22 @@ function bindEvents() {
         });
     });
 
+    $(".employeeDelete").on("click", function (event) {
+        var employeeId = event.currentTarget.getAttribute("data-id");
+        if (confirm("Do you want to delete?")) {
+            $.ajax({
+                url: 'https://localhost:44383/api/internal/employee/deleteemployees/' + employeeId,
+                type: 'DELETE',
+                contentType: "application/json; charset=utf-8",
+                success: function () {
+                    location.reload();
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+    });
 }
 
 function hideEmployeeDetailCard() {

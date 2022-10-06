@@ -12,12 +12,18 @@ namespace EmployeeManagement.DataAccess.Repository
     /// </summary>
     public class EmployeeRepository : IEmployeeRepository
     {
+        private const string _sqlConnectionString = "data source = (localdb)\\mssqllocaldb; database = training";
+        private const string _spGetAllEmployee = "EXEC spGetAllEmployees";
+        private const string _spGetEmployeeById = "EXEC spGetEmployeeById @EmployeeId";
+        private const string _spInsertEmployee = "EXEC spInsertEmployee @EmployeeName,@EmployeeDepartment,@EmployeeAge,@EmployeeAddress";
+        private const string _spUpdateEmployee = "EXEC spUpdateEmployee @EmployeeId,@EmployeeName, @EmployeeDepartment, @EmployeeAge, @EmployeeAddress";
+        private const string _spDeleteEmployee = "EXEC spDeleteEmployee @EmployeeId";
 
         private SqlConnection _sqlConnection;
 
         public EmployeeRepository()
         {
-            _sqlConnection = new SqlConnection("data source = (localdb)\\mssqllocaldb; database = training");
+            _sqlConnection = new SqlConnection(_sqlConnectionString);
         }
 
         public EmployeeData GetEmployeeById(int id)
@@ -26,7 +32,7 @@ namespace EmployeeManagement.DataAccess.Repository
             {
                 _sqlConnection.Open();
 
-                var sqlCommand = new SqlCommand(cmdText: " EXEC spGetEmployeeById @EmployeeId", _sqlConnection);
+                var sqlCommand = new SqlCommand(cmdText: _spGetEmployeeById, _sqlConnection);
                 sqlCommand.Parameters.AddWithValue("EmployeeId", id);
 
                 var sqlDataReader = sqlCommand.ExecuteReader();
@@ -62,7 +68,7 @@ namespace EmployeeManagement.DataAccess.Repository
             {
                 _sqlConnection.Open();
 
-                var sqlCommand = new SqlCommand(cmdText: "EXEC spGetAllEmployees", _sqlConnection);
+                var sqlCommand = new SqlCommand(cmdText: _spGetAllEmployee, _sqlConnection);
 
                 var sqlDataReader = sqlCommand.ExecuteReader();
 
@@ -96,7 +102,7 @@ namespace EmployeeManagement.DataAccess.Repository
             {
                 _sqlConnection.Open();
 
-                var sqlCommand = new SqlCommand(cmdText: "EXEC spInsertEmployee @EmployeeName,@EmployeeDepartment,@EmployeeAge,@EmployeeAddress", _sqlConnection);
+                var sqlCommand = new SqlCommand(cmdText: _spInsertEmployee, _sqlConnection);
 
                 sqlCommand.Parameters.AddWithValue("EmployeeName", employeeData.Name);
                 sqlCommand.Parameters.AddWithValue("EmployeeDepartment", employeeData.Department);
@@ -122,7 +128,7 @@ namespace EmployeeManagement.DataAccess.Repository
             {
                 _sqlConnection.Open();
 
-                var sqlCommand = new SqlCommand(cmdText: " EXEC spUpdateEmployee @EmployeeId,@EmployeeName, @EmployeeDepartment, @EmployeeAge, @EmployeeAddress ", _sqlConnection);
+                var sqlCommand = new SqlCommand(cmdText: _spUpdateEmployee, _sqlConnection);
                 sqlCommand.Parameters.AddWithValue("EmployeeId", employeeData.Id);
                 sqlCommand.Parameters.AddWithValue("EmployeeName", employeeData.Name);
                 sqlCommand.Parameters.AddWithValue("EmployeeDepartment", employeeData.Department);
@@ -141,14 +147,13 @@ namespace EmployeeManagement.DataAccess.Repository
                 _sqlConnection.Close();
             }
         }
-
         public void DeleteEmployee(int id)
         {
             try
             {
                 _sqlConnection.Open();
 
-                var sqlCommand = new SqlCommand(cmdText: "EXEC spDeleteEmployee @EmployeeId", _sqlConnection);
+                var sqlCommand = new SqlCommand(cmdText: _spDeleteEmployee, _sqlConnection);
                 sqlCommand.Parameters.AddWithValue("EmployeeId", id);
 
                 sqlCommand.ExecuteNonQuery();
@@ -162,8 +167,6 @@ namespace EmployeeManagement.DataAccess.Repository
             {
                 _sqlConnection.Close();
             }
-        }
-
-       
+        }   
     }
 }
