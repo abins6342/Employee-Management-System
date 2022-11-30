@@ -35,8 +35,17 @@ namespace EmployeeManagement.API
             services.RegisterDependencies();
 
             services.AddControllers();
+           
 
             services.Configure<HasuraConfiguration>(Configuration.GetSection("HasuraConfiguration"));
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader());
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,6 +59,7 @@ namespace EmployeeManagement.API
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            app.UseCors("CorsPolicy");
 
             app.UseAuthorization();
 
@@ -57,6 +67,7 @@ namespace EmployeeManagement.API
             {
                 endpoints.MapControllers();
             });
+
         }
     }
 }
